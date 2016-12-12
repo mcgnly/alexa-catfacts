@@ -6,29 +6,38 @@ var getUrl= function(){
     return "http://catfacts-api.appspot.com/api/facts";
 };
 var getCatFacts = function(callback){
-    console.log("inside GetCatFact");
-    http.get(getUrl(), function(res){
-        var body = '';
-        res.on('data', function(data){
-            console.log("body is: ", data);
-            body += data;
-        });
+            console.log("inside GetCatFact");
+          http.get(getUrl(), function(res){
+              console.log("1");
+            var body = '';
 
-        res.on('end', function(){
-            var result = JSON.parse(body);
-            console.log("data has ended, so result is: ", result);
-            callback(result);
-        });
+            res.on('data', function(data){
+                console.log("2");
+              body += data;
+            });
 
-    }).on('error', function(e){
-        console.log('Error: ' + e);
-    });
-};
+            res.on('end', function(){
+                console.log("3");
+              var result = JSON.parse(body);
+              var text = result.facts[0];
+              // console.log("the spoken text should be: ", text);
+            callback(text);
+            });
 
-getCatFacts(function(data){
-    console.log("inside the main fn call itself. Fact is: ", data.facts[0]);
+          }).on('error', function(e){
+            console.log('Error: ' + e);
+          });
+        };
+
+
+
+var theEnd = getCatFacts(function(data){
+    console.log("this should be said:", data);
+    return data;
 
 });
+
+console.log("the actual end: ", theEnd);
 // this.emit(':tell', getCatFacts(function(data){
 //               var text = data
 //                           .facts;

@@ -14,7 +14,10 @@ var languageStrings = {
         }
 }};
 
+var globalContext;
+
 exports.handler = function(event, context, callback) {
+    globalContext = context;
     var alexa = Alexa.handler(event, context);//Alexa comes from the sdk
     alexa.APP_ID = APP_ID;
     // To enable string internationalization (i18n) features, set a resources object.
@@ -42,9 +45,10 @@ var handlers = {
         var getUrl= function(){
             return "http://catfacts-api.appspot.com/api/facts";
         };
-        var getCatFacts = function(){
+        var getCatFacts = function(callback){
+            console.log("the context should be", globalContext)
             console.log("inside GetCatFact");
-          http.get(getUrl(), function(res){
+          http.get("http://catfacts-api.appspot.com/api/facts", function(res){
               console.log("1");
             var body = '';
 
@@ -58,18 +62,24 @@ var handlers = {
               var result = JSON.parse(body);
               var text = result.facts[0];
               console.log("the spoken text should be: ", text);
-              return text;
+                callback(text);
+                globalContext.succeed();
             });
 
           }).on('error', function(e){
             console.log('Error: ' + e);
+            globalContext.done(null, 'FAILURE');
           });
+          console.log("the http get failed silently I guess");
         };
-
 
         console.log("inside GetFact itself");
 
-        this.emit(':tell', getCatFacts());
+        var self = this;
+
+        getCatFacts(function(text){
+            self.emit(':tell', text);
+        });
 
 
     },
