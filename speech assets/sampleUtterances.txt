@@ -1,0 +1,14 @@
+GetFacts a fact
+GetFacts a cat fact
+GetFacts tell me a fact
+GetFacts tell me a space fact
+GetFacts give me a fact
+GetFacts give me a cat fact
+GetFacts tell me trivia
+GetFacts tell me a cat trivia
+GetFacts give me trivia
+GetFacts give me a cat trivia
+GetFacts give me some information
+GetFacts give me some cat information
+GetFacts tell me something
+GetFacts give me something
